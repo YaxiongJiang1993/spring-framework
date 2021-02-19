@@ -1,0 +1,11 @@
+description = "Spring practice"
+
+apply plugin: "kotlin"
+
+dependencies {
+    compile project(':spring-context')
+    compile group: 'org.projectlombok', name: 'lombok', version: '1.18.14'
+    compile group: 'org.aspectj', name: 'aspectjweaver', version: '1.9.6'
+
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.8.0-M1'
+}
