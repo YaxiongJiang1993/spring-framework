@@ -32,6 +32,7 @@ public final class Main {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
 				BaseConfiguration.class);
 		Person person = context.getBean("person", Person.class);
+		System.out.println("===========================================");
 		System.out.println(person);
 		UserService userService = context.getBean(UserService.class);
 		System.out.println(userService);
