@@ -20,21 +20,37 @@ import com.davih.configuration.BaseConfiguration;
 import com.davih.domain.Person;
 import com.davih.service.UserService;
 
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+/**
+ * @author Yaxio
+ */
 public final class Main {
 
-	private Main(){
+	private Main() {
 
 	}
 
 	public static void main(String[] args) {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
 				BaseConfiguration.class);
-		Person person = context.getBean("person", Person.class);
 		System.out.println("===========================================");
+		Person person = context.getBean("person", Person.class);
+		String[] beanDefinitionNames = context.getBeanDefinitionNames();
 		System.out.println(person);
 		UserService userService = context.getBean(UserService.class);
 		System.out.println(userService);
+		userService.sayHello();
+	}
+
+	private static void closeCircularReferences() {
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+		context.register(BaseConfiguration.class);
+		// 关闭循环依赖
+		AbstractAutowireCapableBeanFactory beanFactory = (AbstractAutowireCapableBeanFactory) context.getBeanFactory();
+		beanFactory.setAllowCircularReferences(false);
+		context.refresh();
 	}
 }

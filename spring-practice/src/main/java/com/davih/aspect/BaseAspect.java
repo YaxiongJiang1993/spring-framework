@@ -18,10 +18,21 @@ package com.davih.aspect;
 
 import org.aspectj.lang.annotation.Aspect;
 
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
 @Component
 @Aspect
 public class BaseAspect {
 
+	@Pointcut("execution(* com.davih..*.*(..))")
+	public void any(){
+
+	}
+
+	@Before("any()")
+	public void before(){
+		System.out.println("-------------------------aop----before------------------");
+	}
 }
