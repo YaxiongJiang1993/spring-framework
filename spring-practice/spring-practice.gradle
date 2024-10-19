@@ -1,0 +1,23 @@
+description = "Spring practice"
+
+apply plugin: "kotlin"
+
+dependencies {
+    api(project(":spring-context"))
+    api(project(":spring-jdbc"))
+    implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.14'
+    implementation group: 'org.aspectj', name: 'aspectjweaver', version: '1.9.6'
+    optional("javax.annotation:javax.annotation-api")
+    implementation group: 'org.mybatis', name: 'mybatis', version: '3.5.11'
+    implementation 'mysql:mysql-connector-java:8.0.33'
+    implementation 'com.zaxxer:HikariCP:5.0.1'
+    implementation group: 'org.mybatis', name: 'mybatis-spring', version: '3.0.1'
+
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.8.0-M1'
+}
+
+// warnings found and -Werror specified 忽略
+tasks.withType(JavaCompile) {
+    options.compilerArgs -= '-Werror' // Remove -Werror flag
+    options.compilerArgs += '-Xlint:none' // Suppress all warnings
+}

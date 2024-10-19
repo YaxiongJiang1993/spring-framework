@@ -33,6 +33,7 @@ include "spring-web"
 include "spring-webflux"
 include "spring-webmvc"
 include "spring-websocket"
+include "spring-practice"
 include "framework-bom"
 include "integration-tests"
 
