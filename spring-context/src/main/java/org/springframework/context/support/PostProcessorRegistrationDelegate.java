@@ -56,6 +56,28 @@ final class PostProcessorRegistrationDelegate {
 	}
 
 
+	/**
+	 * BeanFactoryPostProcessors按入场方式分为：
+	 * 1. 程序员调用ApplicationContext的API手动添加
+	 * 2. Spring自己扫描出来的
+	 *
+	 * BeanFactoryPostProcessor按类型又可以分为：
+	 * 1. 普通BeanFactoryPostProcessor
+	 * 2. BeanDefinitionRegistryPostProcessor
+	 *
+	 * 执行顺序顺序如下：
+	 * 1. 执行手动添加的BeanDefinitionRegistryPostProcessor                       的postProcessBeanDefinitionRegistry()方法
+	 * 2. 执行扫描出来的BeanDefinitionRegistryPostProcessor（实现了PriorityOrdered）的postProcessBeanDefinitionRegistry()方法
+	 * 3. 执行扫描出来的BeanDefinitionRegistryPostProcessor（实现了Ordered）		   的postProcessBeanDefinitionRegistry()方法
+	 * 4. 执行扫描出来的BeanDefinitionRegistryPostProcessor（普通）				   的postProcessBeanDefinitionRegistry()方法
+	 * 5. 执行扫描出来的BeanDefinitionRegistryPostProcessor（所有）				   的postProcessBeanFactory()方法
+	 * 6. 执行手动添加的BeanFactoryPostProcessor								   的postProcessBeanFactory()方法
+	 * 7. 执行扫描出来的BeanFactoryPostProcessor（实现了PriorityOrdered）		   的postProcessBeanFactory()方法
+	 * 8. 执行扫描出来的BeanFactoryPostProcessor（实现了Ordered）		   		   的postProcessBeanFactory()方法
+	 * 9. 执行扫描出来的BeanFactoryPostProcessor（普通）				   		   的postProcessBeanFactory()方法
+	 *
+	 * ConfigurationClassPostProcessor就会在第2步执行，会进行扫描
+	 */
 	public static void invokeBeanFactoryPostProcessors(
 			ConfigurableListableBeanFactory beanFactory, List<BeanFactoryPostProcessor> beanFactoryPostProcessors) {
 
