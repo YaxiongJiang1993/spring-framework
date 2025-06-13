@@ -91,12 +91,16 @@ abstract class ConfigurationClassUtils {
 			return false;
 		}
 
+		// AnnotationMetadata表示某个类的注解信息，但是并一定要加载这个类
 		AnnotationMetadata metadata;
+
+		// 如果AnnotatedBeanDefinition，则直接取AnnotationMetadata
 		if (beanDef instanceof AnnotatedBeanDefinition &&
 				className.equals(((AnnotatedBeanDefinition) beanDef).getMetadata().getClassName())) {
 			// Can reuse the pre-parsed metadata from the given BeanDefinition...
 			metadata = ((AnnotatedBeanDefinition) beanDef).getMetadata();
 		}
+		// 如果是AbstractBeanDefinition，则解析beanClass得到AnnotationMetadata
 		else if (beanDef instanceof AbstractBeanDefinition && ((AbstractBeanDefinition) beanDef).hasBeanClass()) {
 			// Check already loaded Class if present...
 			// since we possibly can't even load the class file for this Class.
@@ -124,9 +128,13 @@ abstract class ConfigurationClassUtils {
 		}
 
 		Map<String, Object> config = metadata.getAnnotationAttributes(Configuration.class.getName());
+		// 存在@Configuration，并且proxyBeanMethods不为false(为true或为null)时，就是Full配置类
 		if (config != null && !Boolean.FALSE.equals(config.get("proxyBeanMethods"))) {
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_FULL);
 		}
+		// 存在@Configuration，并且proxyBeanMethods为false时，是lite配置类
+		// 或者不存在@Configuration，但是只要存在@Component、@ComponentScan、@Import、@ImportResource四个中的一个，就是lite配置类
+		// 或者不存在@Configuration，只要存在@Bean注解了的方法，就是lite配置类
 		else if (config != null || isConfigurationCandidate(metadata)) {
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_LITE);
 		}
@@ -157,6 +165,7 @@ abstract class ConfigurationClassUtils {
 		}
 
 		// Any of the typical annotations found?
+		// 只要存在@Component、@ComponentScan、@Import、@ImportResource四个中的一个，就是lite配置类
 		for (String indicator : candidateIndicators) {
 			if (metadata.isAnnotated(indicator)) {
 				return true;
@@ -164,6 +173,7 @@ abstract class ConfigurationClassUtils {
 		}
 
 		// Finally, let's look for @Bean methods...
+		// 只要存在@Bean注解了的方法，就是lite配置类
 		return hasBeanMethods(metadata);
 	}
 
