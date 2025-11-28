@@ -261,6 +261,7 @@ public class ContextLoader {
 		try {
 			// Store context in local instance variable, to guarantee that
 			// it is available on ServletContext shutdown.
+			// xml会在这里创建
 			if (this.context == null) {
 				this.context = createWebApplicationContext(servletContext);
 			}
@@ -278,13 +279,19 @@ public class ContextLoader {
 					configureAndRefreshWebApplicationContext(cwac, servletContext);
 				}
 			}
+			// 在servlet域中设置根容器（在子容器就可以直接拿到了）
 			servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, this.context);
 
+			// 获取线程上下文类加载器，默认为WebAppClassLoader
 			ClassLoader ccl = Thread.currentThread().getContextClassLoader();
+			// 如果spring的jar包放在每个webapp自己的目录中
+			// 此时线程上下文类加载器会与本类的类加载器（加载spring的）相同，都是
 			if (ccl == ContextLoader.class.getClassLoader()) {
 				currentContext = this.context;
 			}
+			// 如果不同，也就是上面说的那个问题的情况，那么用一个map把刚才创建的
 			else if (ccl != null) {
+				// 一个webapp对应一个记录，后续调用时直接根据WebAppClassLoader来取出
 				currentContextPerThread.put(ccl, this.context);
 			}
 
@@ -370,6 +377,7 @@ public class ContextLoader {
 		if (ObjectUtils.identityToString(wac).equals(wac.getId())) {
 			// The application context id is still set to its original default value
 			// -> assign a more useful id based on available information
+			// 设置id
 			String idParam = sc.getInitParameter(CONTEXT_ID_PARAM);
 			if (idParam != null) {
 				wac.setId(idParam);
@@ -381,7 +389,9 @@ public class ContextLoader {
 			}
 		}
 
+		// 设置ServletContext到spring上下文
 		wac.setServletContext(sc);
+		// 获得servlet容器中的全局参数contextConfigLocation  （xml）
 		String configLocationParam = sc.getInitParameter(CONFIG_LOCATION_PARAM);
 		if (configLocationParam != null) {
 			wac.setConfigLocation(configLocationParam);
@@ -395,7 +405,9 @@ public class ContextLoader {
 			((ConfigurableWebEnvironment) env).initPropertySources(sc, null);
 		}
 
+		// 在容器加载前 可以通过设置初始化参数contextInitializerClasses、globalInitializerClasses 进行扩展
 		customizeContext(sc, wac);
+		// 刷新容器
 		wac.refresh();
 	}
 

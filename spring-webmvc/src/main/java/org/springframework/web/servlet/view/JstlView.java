@@ -118,6 +118,7 @@ public class JstlView extends InternalResourceView {
 	 */
 	@Override
 	protected void initServletContext(ServletContext servletContext) {
+		// 国际化的那玩意
 		if (this.messageSource != null) {
 			this.messageSource = JstlUtils.getJstlAwareMessageSource(servletContext, this.messageSource);
 		}

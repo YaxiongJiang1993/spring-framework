@@ -129,6 +129,7 @@ public class ModelAttributeMethodProcessor implements HandlerMethodArgumentResol
 		Assert.state(mavContainer != null, "ModelAttributeMethodProcessor requires ModelAndViewContainer");
 		Assert.state(binderFactory != null, "ModelAttributeMethodProcessor requires WebDataBinderFactory");
 
+		// javaBean参数就是获取它的类首字母小写作为名字
 		String name = ModelFactory.getNameForParameter(parameter);
 		ModelAttribute ann = parameter.getParameterAnnotation(ModelAttribute.class);
 		if (ann != null) {
@@ -143,6 +144,7 @@ public class ModelAttributeMethodProcessor implements HandlerMethodArgumentResol
 		}
 		else {
 			// Create attribute instance
+			// Create attribute instance  解析属性 ：单个参数： 通过request.getParameter解析参数  ；  pojo:  通过构造函数进行实例化，
 			try {
 				attribute = createAttribute(name, parameter, binderFactory, webRequest);
 			}
@@ -165,6 +167,7 @@ public class ModelAttributeMethodProcessor implements HandlerMethodArgumentResol
 		if (bindingResult == null) {
 			// Bean property binding and validation;
 			// skipped in case of binding failure on construction.
+			// skipped in case of binding failure on construction.  将属性封装为数据绑定器
 			WebDataBinder binder = binderFactory.createBinder(webRequest, attribute, name);
 			if (binder.getTarget() != null) {
 				if (!mavContainer.isBindingDisabled(name)) {
@@ -216,6 +219,7 @@ public class ModelAttributeMethodProcessor implements HandlerMethodArgumentResol
 		MethodParameter nestedParameter = parameter.nestedIfOptional();
 		Class<?> clazz = nestedParameter.getNestedParameterType();
 
+		// 通过构造函数，构造一个实例
 		Constructor<?> ctor = BeanUtils.getResolvableConstructor(clazz);
 		Object attribute = constructAttribute(ctor, attributeName, parameter, binderFactory, webRequest);
 		if (parameter != nestedParameter) {

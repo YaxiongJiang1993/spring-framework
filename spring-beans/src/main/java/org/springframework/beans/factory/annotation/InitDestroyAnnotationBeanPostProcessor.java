@@ -245,6 +245,7 @@ public class InitDestroyAnnotationBeanPostProcessor
 				}
 			});
 
+			// 父类的在前面
 			initMethods.addAll(0, currInitMethods);
 			destroyMethods.addAll(currDestroyMethods);
 			targetClass = targetClass.getSuperclass();

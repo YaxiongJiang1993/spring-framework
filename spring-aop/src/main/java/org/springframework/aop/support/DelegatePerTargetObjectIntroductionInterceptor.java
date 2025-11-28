@@ -88,6 +88,7 @@ public class DelegatePerTargetObjectIntroductionInterceptor extends Introduction
 	@Override
 	@Nullable
 	public Object invoke(MethodInvocation mi) throws Throwable {
+		// 当前执行的方法是否是接口中的方法
 		if (isMethodOnIntroducedInterface(mi)) {
 			Object delegate = getIntroductionDelegateFor(mi.getThis());
 

@@ -313,6 +313,7 @@ public abstract class AbstractView extends WebApplicationObjectSupport implement
 
 		Map<String, Object> mergedModel = createMergedOutputModel(model, request, response);
 		prepareResponse(request, response);
+		// 这里
 		renderMergedOutputModel(mergedModel, getRequestToExpose(request), response);
 	}
 
@@ -439,6 +440,7 @@ public abstract class AbstractView extends WebApplicationObjectSupport implement
 	protected void exposeModelAsRequestAttributes(Map<String, Object> model,
 			HttpServletRequest request) throws Exception {
 
+		// 将model解析到request的attribute中
 		model.forEach((name, value) -> {
 			if (value != null) {
 				request.setAttribute(name, value);

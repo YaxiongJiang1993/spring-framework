@@ -102,6 +102,8 @@ final class SimpleAnnotationMetadata implements AnnotationMetadata {
 
 	@Override
 	public boolean isIndependent() {
+		// 如果是内部类，enclosingClassName会存outClassName
+		// 如果是static的内部类，则independentInnerClass
 		return (this.enclosingClassName == null || this.independentInnerClass);
 	}
 

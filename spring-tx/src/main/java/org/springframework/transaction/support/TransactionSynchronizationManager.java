@@ -73,6 +73,7 @@ import org.springframework.util.Assert;
  */
 public abstract class TransactionSynchronizationManager {
 
+	// key为DataSource对象，value为ConnectionHolder对象
 	private static final ThreadLocal<Map<Object, Object>> resources =
 			new NamedThreadLocal<>("Transactional resources");
 
@@ -106,6 +107,7 @@ public abstract class TransactionSynchronizationManager {
 	 * @see #hasResource
 	 */
 	public static Map<Object, Object> getResourceMap() {
+		// resources是一个ThreadLocal包装的Map，用来缓存资源的，比如缓存当前线程中由某个DataSource所创建的数据库连接
 		Map<Object, Object> map = resources.get();
 		return (map != null ? Collections.unmodifiableMap(map) : Collections.emptyMap());
 	}
@@ -144,6 +146,7 @@ public abstract class TransactionSynchronizationManager {
 		if (map == null) {
 			return null;
 		}
+		// 获取DataSource对象所对应的数据库连接对象
 		Object value = map.get(actualKey);
 		// Transparently remove ResourceHolder that was marked as void...
 		if (value instanceof ResourceHolder && ((ResourceHolder) value).isVoid()) {

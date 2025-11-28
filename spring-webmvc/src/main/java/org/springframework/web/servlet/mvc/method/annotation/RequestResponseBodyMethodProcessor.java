@@ -108,6 +108,7 @@ public class RequestResponseBodyMethodProcessor extends AbstractMessageConverter
 	}
 
 
+	// 判断方法或者类上面有没有ResponseBody
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
 		return parameter.hasParameterAnnotation(RequestBody.class);
@@ -180,6 +181,7 @@ public class RequestResponseBodyMethodProcessor extends AbstractMessageConverter
 		ServletServerHttpResponse outputMessage = createOutputMessage(webRequest);
 
 		// Try even with null return value. ResponseBodyAdvice could get involved.
+		// 通过MessageConverters 写数据
 		writeWithMessageConverters(returnValue, returnType, inputMessage, outputMessage);
 	}
 

@@ -114,7 +114,9 @@ public class ServletRequestDataBinder extends WebDataBinder {
 	 * @see #bind(org.springframework.beans.PropertyValues)
 	 */
 	public void bind(ServletRequest request) {
+		// 通过request.getParameterNames(); 创建PropertyValues
 		MutablePropertyValues mpvs = new ServletRequestParameterPropertyValues(request);
+		// 如果是上传文件
 		MultipartRequest multipartRequest = WebUtils.getNativeRequest(request, MultipartRequest.class);
 		if (multipartRequest != null) {
 			bindMultipart(multipartRequest.getMultiFileMap(), mpvs);

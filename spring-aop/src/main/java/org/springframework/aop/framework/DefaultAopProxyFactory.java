@@ -54,6 +54,11 @@ public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 
 	@Override
 	public AopProxy createAopProxy(AdvisedSupport config) throws AopConfigException {
+		// 或者被代理对象没有实现接口，
+		// 或者只实现了SpringProxy这个接口
+		// 那么则利用Cglib进行动态代理，但如果被代理类是接口，或者被代理类已经是进行过JDK动态代理而生成的代理类了则只能进行JDK动态代理
+		// 其他情况都会进行JDK动态代理，比如被代理类实现了除SpringProxy接口之外的其他接口
+		// 是不是在GraalVM虚拟机上运行
 		if (!NativeDetector.inNativeImage() &&
 				(config.isOptimize() || config.isProxyTargetClass() || hasNoUserSuppliedProxyInterfaces(config))) {
 			Class<?> targetClass = config.getTargetClass();
