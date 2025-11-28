@@ -58,7 +58,7 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 
 
 	/**
-	 * 此方法有重载，此方法是用来调用无参构造方法来实例化的
+	 * 此方法有重载，此方法是用来调用无参构造方法来实例化的.
 	 */
 	@Override
 	public Object instantiate(RootBeanDefinition bd, @Nullable String beanName, BeanFactory owner) {

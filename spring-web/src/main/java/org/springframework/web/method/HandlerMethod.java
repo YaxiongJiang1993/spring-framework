@@ -219,11 +219,12 @@ public class HandlerMethod {
 	}
 
 	/**
-	 * 初始化参数列表。
+	 * 初始化参数列表.
 	 * MethodParameter类中有private String parameterName;储存的就是参数名，
 	 * 但是构造方法中并没有设置他的值，真正设置值是在：
+	 *
+	 * @return the initialized method parameters
 	 * @see MethodParameter#getParameterName()
-	 * @return
 	 */
 	private MethodParameter[] initMethodParameters() {
 		int count = this.bridgedMethod.getParameterCount();

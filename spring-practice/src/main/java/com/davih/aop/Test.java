@@ -1,6 +1,27 @@
+/*
+ * Copyright 2002-2024 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.davih.aop;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+
 import com.davih.aop.advice.TestBeforeAdvice;
+
 import org.aopalliance.aop.Advice;
 import org.springframework.aop.MethodBeforeAdvice;
 import org.springframework.aop.Pointcut;
@@ -15,11 +36,10 @@ import org.springframework.cglib.proxy.MethodProxy;
 import org.springframework.cglib.proxy.NoOp;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-
 public class Test {
+
+	private Test() {
+	}
 
 	public static void main(String[] args) {
 
@@ -114,13 +134,13 @@ public class Test {
 		enhancer.setCallbacks(new Callback[]{
 				new MethodInterceptor() {
 					/**
-					 *
+					 * Intercept method invocation.
 					 * @param o proxy object
 					 * @param method method
 					 * @param objects method params
 					 * @param methodProxy proxy method
-					 * @return
-					 * @throws Throwable
+					 * @return result
+					 * @throws Throwable exception
 					 */
 					@Override
 					public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
@@ -141,10 +161,10 @@ public class Test {
 			public int accept(Method method) {
 				if (method.getName().equals("test")) {
 					return 0;
-				} else {
+				}
+				else {
 					return 1;
 				}
-
 			}
 		});
 

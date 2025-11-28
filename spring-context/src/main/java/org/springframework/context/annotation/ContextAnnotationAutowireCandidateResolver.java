@@ -49,13 +49,11 @@ import org.springframework.util.Assert;
 public class ContextAnnotationAutowireCandidateResolver extends QualifierAnnotationAutowireCandidateResolver {
 
 	/**
-	 * 判断是不是懒注入（@Autowired+@Lazy）,如果是则会在注入时先生成一个代理对象注入给属性，所以懒注入并不代表属性为null
-	 *
+	 * 判断是不是懒注入（@Autowired+@Lazy）,如果是则会在注入时先生成一个代理对象注入给属性，所以懒注入并不代表属性为null.
 	 * @param descriptor the descriptor for the target method parameter or field
 	 * @param beanName the name of the bean that contains the injection point
-	 * @return Object
+	 * @return the lazy resolution proxy if necessary, or null otherwise
 	 */
-	// 判断是不是懒注入（@Autowired+@Lazy）,如果是则会在注入时先生成一个代理对象注入给属性，所以懒注入并不代表属性为null
 	@Override
 	@Nullable
 	public Object getLazyResolutionProxyIfNecessary(DependencyDescriptor descriptor, @Nullable String beanName) {
