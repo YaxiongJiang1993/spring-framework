@@ -53,6 +53,7 @@ public class Test {
 
 		IAccount accountService = (IAccount) context.getBean("IAccountImpl");
 		accountService.xxx();
+//		context.registerBeanDefinition();
 	}
 
 	private static void testProxyFactory2() {
