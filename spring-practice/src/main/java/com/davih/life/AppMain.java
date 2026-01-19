@@ -33,8 +33,16 @@ public class AppMain {
 		context.register(AppConfiguration.class);
 		context.refresh();
 
-		AccountService accountService = context.getBean("accountService", AccountService.class);
-		context.getBean(AccountService.class);
+		AccountService accountService = (AccountService) context.getBean("accountService", new IndexService());
+//		context.getBean(AccountService.class);
 		System.out.println(accountService);
+
+		System.out.println("=========================");
+		UserService userService = (UserService) context.getBean("userService");
+		userService.test();
+
+//		context.registerShutdownHook();
+//		context.close();
+
 	}
 }

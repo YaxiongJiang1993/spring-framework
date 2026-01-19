@@ -460,7 +460,9 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 		if (alreadySeen == null) {
 			alreadySeen = new HashSet<>();
 		}
+		// 已经判定过的 不用判定 防止无限递归
 		alreadySeen.add(beanName);
+		// beanName依赖的对象和dep之间有无循环依赖的判定
 		for (String transitiveDependency : dependentBeans) {
 			if (isDependent(transitiveDependency, dependentBeanName, alreadySeen)) {
 				return true;

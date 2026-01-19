@@ -17,7 +17,6 @@
 package com.davih.life;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,17 +26,16 @@ import org.springframework.stereotype.Service;
  */
 @Service
 //@Scope("prototype")
-public class AccountService {
+public class UserService {
 
-	@Autowired
 	private IndexService indexService;
 
-	public AccountService() {
+	public UserService() {
 		System.out.println(0);
 		System.out.println("AccountService ... ");
 	}
 
-	public AccountService(IndexService indexService){
-		System.out.println(1);
+	public void test(){
+		System.out.println("indexService: "+indexService);
 	}
 }
