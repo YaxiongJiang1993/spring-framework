@@ -27,10 +27,26 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountService {
 
-	@Autowired
+//	@Autowired
 	private IndexService indexService;
 
 	public AccountService() {
-		System.out.println("AccountService ... ");
+		System.out.println("AccountService ... 0 ");
+	}
+
+	@Autowired
+	public AccountService(IndexService indexService){
+		System.out.println("AccountService ... 1 ");
+		this.indexService=indexService;
+	}
+
+
+	public AccountService(IndexService indexService, IndexService indexService1){
+		System.out.println("AccountService ... 2 ");
+		this.indexService=indexService;
+	}
+
+	public void test(){
+		System.out.println(indexService);
 	}
 }

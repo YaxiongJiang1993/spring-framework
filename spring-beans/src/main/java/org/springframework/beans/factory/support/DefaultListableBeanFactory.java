@@ -1714,6 +1714,9 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 			// resolvableDependencies记录了某个类型对应某个Bean，启动Spring时会进行设置，比如BeanFactory.class对应BeanFactory实例
 			// 注意：如果是Spring自己的byType，descriptor.getDependencyName()将返回空，只有是@Autowired才会方法属性名或方法参数名
+
+			// 表示这个 beanInstance 是通过 registerResolvableDependency(...) 注册过的“特殊依赖”（如 BeanFactory, ApplicationContext, Environment 等）
+			// 如果候选刚好是这种“可解析依赖”，那它就是要找的目标，直接选它。
 			if ((beanInstance != null && this.resolvableDependencies.containsValue(beanInstance)) ||
 					matchesBeanName(candidateName, descriptor.getDependencyName())) {
 				return candidateName;

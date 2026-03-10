@@ -19,6 +19,8 @@ package com.davih.aop;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * Configuration class for AOP.
@@ -31,6 +33,8 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 //@Import(DefaultAdvisorAutoProxyCreator.class)
 @EnableAspectJAutoProxy
 //@Import(AnnotationAwareAspectJAutoProxyCreator.class)
+//@EnableAsync
+//@EnableTransactionManagement
 public class AopConfiguration {
 
 	/*@Bean
