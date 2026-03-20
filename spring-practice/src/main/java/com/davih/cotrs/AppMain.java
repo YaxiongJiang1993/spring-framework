@@ -17,6 +17,7 @@
 package com.davih.cotrs;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 /**
  * Main application class.
@@ -30,6 +31,8 @@ public class AppMain {
 
 	public static void main(String[] args) {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfiguration.class);
+//		AnnotationConfigWebApplicationContext context1=new AnnotationConfigWebApplicationContext();
+//		context1.refresh();
 		AccountService accountService = context.getBean("accountService", AccountService.class);
 //		context.getBean(AccountService.class);
 		System.out.println(accountService);

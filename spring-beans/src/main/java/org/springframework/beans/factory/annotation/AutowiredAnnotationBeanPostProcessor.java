@@ -305,6 +305,11 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 			this.lookupMethodsChecked.add(beanName);
 		}
 
+		// 方法返回：
+		// 1.如果autowired=true,返回这个方法
+		// 2.如果autowired=falsse,返回这些方法（可能不止一个）+默认构造方法
+		// 3.如果只有一个构造方法，并且参数是多个，返回它
+		// 4.其他情况不返回，包括只有一个默认构造方法（无autowired注解），有多个构造方法（无autowired注解）
 		// Quick check on the concurrent map first, with minimal locking.
 		Constructor<?>[] candidateConstructors = this.candidateConstructorsCache.get(beanClass);
 		if (candidateConstructors == null) {

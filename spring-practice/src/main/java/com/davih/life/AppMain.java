@@ -42,7 +42,7 @@ public class AppMain {
 		userService.test();
 
 //		context.registerShutdownHook();
-//		context.close();
+		context.close();
 
 	}
 }
