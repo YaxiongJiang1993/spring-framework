@@ -36,5 +36,8 @@ public class AppMain {
 		AccountService accountService = context.getBean("accountService", AccountService.class);
 		context.getBean(AccountService.class);
 		System.out.println(accountService);
+
+		TeacherService teacherService = context.getBean("teacherService", TeacherService.class);
+		teacherService.test();
 	}
 }
