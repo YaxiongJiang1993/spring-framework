@@ -921,6 +921,7 @@ public class Enhancer extends AbstractClassGenerator {
 	 * @return newly created instance
 	 */
 	private Object createUsingReflection(Class type) {
+		// 设置callbacks到代理类中
 		setThreadCallbacks(type, callbacks);
 		try {
 

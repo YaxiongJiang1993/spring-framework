@@ -44,15 +44,16 @@ public class Test {
 	public static void main(String[] args) {
 
 //		testCglib();
-//		testJdkProxy();
+		testJdkProxy();
 //		testProxyFactory2();
 
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AopConfiguration.class);
+
 		/*AccountService accountService = (AccountService) context.getBean("accountService");
 		accountService.test();*/
 
+		/*AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AopConfiguration.class);
 		IAccount accountService = (IAccount) context.getBean("IAccountImpl");
-		accountService.xxx();
+		accountService.xxx();*/
 //		context.registerBeanDefinition();
 	}
 
@@ -96,6 +97,7 @@ public class Test {
 
 		ProxyFactory proxyFactory = new ProxyFactory();
 		proxyFactory.setTarget(target);
+		proxyFactory.setInterfaces(IUserService.class);
 		proxyFactory.addAdvice(new MethodBeforeAdvice() {
 
 			@Override
@@ -126,6 +128,8 @@ public class Test {
 
 
 	private static void testCglib() {
+		// vm options: -Dcglib.debugLocation=/home/david/moon/spring-framework/spring-practice/build/classes/java/main
+		// add proxy class to disk, not only memory
 
 		AccountService target = new AccountService();
 
@@ -136,7 +140,7 @@ public class Test {
 				new MethodInterceptor() {
 					/**
 					 * Intercept method invocation.
-					 * @param o proxy object
+					 * @param o proxy object 就是这里的accountService
 					 * @param method method
 					 * @param objects method params
 					 * @param methodProxy proxy method
@@ -145,6 +149,9 @@ public class Test {
 					 */
 					@Override
 					public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
+						// methodProxy proxied two method in this class, test(),CGLIB$test$1()
+						// methodProxy.invoke() test()
+						// methodProxy.invokeSuper() CGLIB$test$1()
 						System.out.println(" ...........before.............  ");
 //						Object result = methodProxy.invoke(target, objects);
 //						Object result=method.invoke(target, objects);
@@ -158,6 +165,7 @@ public class Test {
 		});
 
 		enhancer.setCallbackFilter(new CallbackFilter() {
+			// 返回Callbacks数组索引
 			@Override
 			public int accept(Method method) {
 				if (method.getName().equals("test")) {
@@ -170,6 +178,6 @@ public class Test {
 		});
 
 		AccountService accountService = (AccountService) enhancer.create();
-		accountService.a();
+		accountService.test();
 	}
 }

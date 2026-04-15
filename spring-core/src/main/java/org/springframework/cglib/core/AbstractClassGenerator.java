@@ -107,10 +107,12 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
 			Function<AbstractClassGenerator, Object> load =
 					new Function<AbstractClassGenerator, Object>() {
 						public Object apply(AbstractClassGenerator gen) {
+							// 生成代理类
 							Class klass = gen.generate(ClassLoaderData.this);
 							return gen.wrapCachedClass(klass);
 						}
 					};
+			// 两个参数都是 lambda 表达式，GET_KEY 是用来获取 key 的，load 是用来生成代理类的
 			generatedClasses = new LoadingCache<AbstractClassGenerator, Object, Object>(GET_KEY, load);
 		}
 
@@ -128,6 +130,7 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
 
 		public Object get(AbstractClassGenerator gen, boolean useCache) {
 			if (!useCache) {
+				// gen 是 Enhancer，ClassLoaderData.this 中存储了 EnhancerKey 代理对象
 				return gen.generate(ClassLoaderData.this);
 			}
 			else {
@@ -309,6 +312,7 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
 					data = cache.get(loader);
 					if (data == null) {
 						Map<ClassLoader, ClassLoaderData> newCache = new WeakHashMap<ClassLoader, ClassLoaderData>(cache);
+						// 构造方法中会生成一个生成代理类的 Lambda 表达式
 						data = new ClassLoaderData(loader);
 						newCache.put(loader, data);
 						CACHE = newCache;
@@ -316,8 +320,11 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
 				}
 			}
 			this.key = key;
+			// 利用 ClassLoaderData 拿到代理类，ClassLoaderData 中有一个 generatedClasses 用来缓存生成好的代理类
+			// this 就是 Enhancer
 			Object obj = data.get(this, getUseCache());
 			if (obj instanceof Class) {
+				// 调用代理类的构造方法生成一个代理对象
 				return firstInstance((Class) obj);
 			}
 			return nextInstance(obj);
@@ -355,6 +362,7 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
 					// ignore
 				}
 			}
+			// this 就是Enhancer
 			byte[] b = strategy.generate(this);
 			String className = ClassNameReader.getClassName(new ClassReader(b));
 			ProtectionDomain protectionDomain = getProtectionDomain();
