@@ -31,10 +31,10 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class TestAspect {
 
-	@DeclareParents(value = "com.com.davih.aop.AccountService", defaultImpl = IAccountImpl.class)
+	@DeclareParents(value = "com.davih.aop.AccountService", defaultImpl = IAccountImpl.class)
 	private IAccount iAccount;
 
-	@Pointcut("execution(public void com.com.davih.aop.AccountService.test())")
+	@Pointcut("execution(public void com.davih.aop.AccountService.test())")
 	public void any(){
 
 	}

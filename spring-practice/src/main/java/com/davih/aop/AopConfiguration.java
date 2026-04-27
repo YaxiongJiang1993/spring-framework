@@ -16,6 +16,13 @@
 
 package com.davih.aop;
 
+import com.davih.aop.advice.TestBeforeAdvice;
+import org.springframework.aop.framework.ProxyFactoryBean;
+import org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.aop.support.DefaultPointcutAdvisor;
+import org.springframework.aop.support.NameMatchMethodPointcut;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -37,6 +44,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 //@EnableTransactionManagement
 public class AopConfiguration {
 
+	/**
+	 * make a object to bean with proxy
+	 */
 	/*@Bean
 	public ProxyFactoryBean accountService() {
 		AccountService accountService = new AccountService();
@@ -48,6 +58,10 @@ public class AopConfiguration {
 		return proxyFactoryBean;
 	}*/
 
+	/**
+	 * proxy among the spring bean, use rules
+	 * just use bean name as the rules
+	 */
 	/*@Bean
 	public BeanNameAutoProxyCreator beanNameAutoProxyCreator(){
 		BeanNameAutoProxyCreator beanNameAutoProxyCreator=new BeanNameAutoProxyCreator();
@@ -57,22 +71,28 @@ public class AopConfiguration {
 		return beanNameAutoProxyCreator;
 	}*/
 
+	/**
+	 * DefaultAdvisorAutoProxyCreator bean post processor
+	 * //@Import(DefaultAdvisorAutoProxyCreator.class)
+	 * @return
+	 */
 	/*@Bean
 	public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator(){
 		DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator=new DefaultAdvisorAutoProxyCreator();
-
+		// 强制cglib
+		defaultAdvisorAutoProxyCreator.setProxyTargetClass(true);
 		return defaultAdvisorAutoProxyCreator;
-	}*/
+	}
 
-//	@Bean
-//	public DefaultPointcutAdvisor defaultPointcutAdvisor(){
-//		NameMatchMethodPointcut pointcut=new NameMatchMethodPointcut();
-//		pointcut.addMethodName("test");
-//
-//		DefaultPointcutAdvisor defaultPointcutAdvisor=new DefaultPointcutAdvisor();
-//		defaultPointcutAdvisor.setPointcut(pointcut);
-//		defaultPointcutAdvisor.setAdvice(new TestBeforeAdvice());
-//
-//		return defaultPointcutAdvisor;
-//	}
+	@Bean
+	public DefaultPointcutAdvisor defaultPointcutAdvisor(){
+		NameMatchMethodPointcut pointcut=new NameMatchMethodPointcut();
+		pointcut.addMethodName("test");
+
+		DefaultPointcutAdvisor defaultPointcutAdvisor=new DefaultPointcutAdvisor();
+		defaultPointcutAdvisor.setPointcut(pointcut);
+		defaultPointcutAdvisor.setAdvice(new TestBeforeAdvice());
+
+		return defaultPointcutAdvisor;
+	}*/
 }

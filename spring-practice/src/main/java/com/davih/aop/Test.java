@@ -36,6 +36,27 @@ import org.springframework.cglib.proxy.MethodProxy;
 import org.springframework.cglib.proxy.NoOp;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+/**
+ * Spring AOP 核心术语提取
+ * Aspect (切面)：表示切面，比如被 @Aspect 注解的类就是切面，可以在切面中去定义 Pointcut、Advice 等等。
+ *
+ * Join point (连接点)：表示连接点，表示一个程序在执行过程中的一个点，比如一个方法的执行，比如一个异常的处理。在 Spring AOP 中，
+ * 一个连接点通常表示一个方法的执行。
+ *
+ * Advice (通知)：表示通知，表示在一个特定连接点上所采取的动作。Advice 分为不同的类型，后面详细讨论。在很多 AOP 框架中，包括 Spring，
+ * 会用 Interceptor 拦截器来实现 Advice，并且在连接点周围维护一个 Interceptor 链。
+ *
+ * Pointcut (切点)：表示切点，用来匹配一个或多个连接点。Advice 与切点表达式是关联在一起的，Advice 将会执行在和切点表达式所匹配的连接
+ * 点上。
+ *
+ * Introduction (引入)：可以使用 @DeclareParents 来给所匹配的类添加一个接口，并指定一个默认实现。
+ *
+ * Target object (目标对象)：目标对象，被代理对象。
+ *
+ * AOP proxy (AOP 代理)：表示代理工厂，用来创建代理对象的。在 Spring Framework 中，要么是 JDK 动态代理，要么是 CGLIB 代理。
+ *
+ * Weaving (织入)：表示织入，表示创建代理对象的动作。这个动作可以发生在编译时期（比如 Aspectj），或者运行时，比如 Spring AOP。
+ */
 public class Test {
 
 	private Test() {
@@ -44,15 +65,17 @@ public class Test {
 	public static void main(String[] args) {
 
 //		testCglib();
-		testJdkProxy();
+//		testJdkProxy();
+//		testProxyFactory();
 //		testProxyFactory2();
 
 
-		/*AccountService accountService = (AccountService) context.getBean("accountService");
-		accountService.test();*/
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AopConfiguration.class);
+		AccountService accountService = (AccountService) context.getBean("accountService");
+		accountService.test();
 
 		/*AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AopConfiguration.class);
-		IAccount accountService = (IAccount) context.getBean("IAccountImpl");
+		IAccount accountService = (IAccount) context.getBean("accountService");
 		accountService.xxx();*/
 //		context.registerBeanDefinition();
 	}
@@ -88,7 +111,8 @@ public class Test {
 		});
 
 		IUserService user = (IUserService) proxyFactory.getProxy();
-		user.a();
+//		user.a();
+		user.test();
 	}
 
 	private static void testProxyFactory() {
@@ -97,7 +121,8 @@ public class Test {
 
 		ProxyFactory proxyFactory = new ProxyFactory();
 		proxyFactory.setTarget(target);
-		proxyFactory.setInterfaces(IUserService.class);
+
+//		proxyFactory.setInterfaces(IUser.class);
 		proxyFactory.addAdvice(new MethodBeforeAdvice() {
 
 			@Override
