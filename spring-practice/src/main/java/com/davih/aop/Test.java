@@ -65,6 +65,8 @@ public class Test {
 	public static void main(String[] args) {
 
 //		testCglib();
+//		System.setProperty("sun.misc.ProxyGenerator.saveGeneratedFiles", "true");
+//		System.out.println("user.dir = " + System.getProperty("user.dir"));
 //		testJdkProxy();
 //		testProxyFactory();
 //		testProxyFactory2();
@@ -73,7 +75,6 @@ public class Test {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AopConfiguration.class);
 		AccountService accountService = (AccountService) context.getBean("accountService");
 		accountService.test();
-
 		/*AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AopConfiguration.class);
 		IAccount accountService = (IAccount) context.getBean("accountService");
 		accountService.xxx();*/
@@ -136,7 +137,6 @@ public class Test {
 	}
 
 	private static void testJdkProxy() {
-
 		IUserService target = new IUserService();
 
 		IUser user = (IUser) Proxy.newProxyInstance(Test.class.getClassLoader(), new Class[]{IUser.class}, new InvocationHandler() {

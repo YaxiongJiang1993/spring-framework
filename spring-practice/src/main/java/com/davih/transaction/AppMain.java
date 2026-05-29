@@ -21,6 +21,28 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 /**
  * Main application class.
  *
+ * test
+ *
+ * Spring事务管理器，创建数据库连接conn (Spring transaction manager, creates database connection conn)
+ * conn.autocommit = false;
+ * conn.隔离级别 (conn isolation level)
+ * conn放入ThreadLocal<Map> DataSource, conn连接 (Put conn into ThreadLocal<Map> DataSource, conn connection)
+ * target.test() sql1, sql2,
+ *
+ *     a()
+ *     挂起 --> 挂起对象.conn连接 --> (Suspend --> Suspended object.conn connection -->)
+ *     Spring事务管理器，创建数据库连接conn1 (Spring transaction manager, creates database connection conn1)
+ *     conn1.autocommit = false;
+ *     conn1.隔离级别 (conn1 isolation level)
+ *     conn1放入ThreadLocal<Map> DataSource, conn1连接 (Put conn1 into ThreadLocal<Map> DataSource, conn1 connection)
+ *     sql
+ *     conn1.提交 (conn1 submit/commit)
+ *     恢复 --> 挂起对象.conn连接 --> ThreadLocal<Map> (Resume --> Suspended object.conn connection --> ThreadLocal<Map>)
+ *
+ * sql3
+ *
+ * 提交、回滚 (Commit, Rollback)
+ *
  * @author Yaxio
  */
 public class AppMain {
